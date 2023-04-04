@@ -1,0 +1,29 @@
+{
+    "network": "mainnet",
+    "gasSpeed": "average",
+    "gasPriceOverride": "",
+    "name": "Balancer vETH StablePool",
+    "symbol": "B-vETH-STABLE",
+    "poolType": "ComposableStablePool",
+    "swapFeePercent": "0.04",
+    "fromInternalBalance": false,
+    "amplificationParameter": "50",
+    "owner": "0xba1ba1ba1ba1ba1ba1ba1ba1ba1ba1ba1ba1ba1b",
+    "tokens": {
+        "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2": {
+            "initialBalance": "0.1",
+            "allowance": -1,
+            "rateProvider": "0x0000000000000000000000000000000000000000",
+            "tokenRateCacheDuration": "21600",
+            "exemptFromYieldProtocolFeeFlags": false
+        },
+        "0x4Bc3263Eb5bb2Ef7Ad9aB6FB68be80E43b43801F": {
+            "initialBalance": "0.1",
+            "allowance": -1,
+            "rateProvider": "0xA84C362e57489ce8F4E392e479D32E06779aF836",
+            "tokenRateCacheDuration": "21600",
+            "exemptFromYieldProtocolFeeFlags": false
+        }
+    },
+    "poolId": "793f2d5cd52dfafe7a1a1b0b3988940ba2d6a63d0000000000000000000004f8"
+}
