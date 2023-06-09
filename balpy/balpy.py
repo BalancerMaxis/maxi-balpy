@@ -11,6 +11,7 @@ import pkgutil
 from decimal import *
 from functools import cache
 import traceback
+from bal_addresses import AddrBook
 
 # low level web3
 from web3 import Web3, middleware
@@ -101,7 +102,8 @@ class balpy(object):
 						"kovan":	{"id":42,		"blockExplorerUrl":"kovan.etherscan.io",			"balFrontend":"kovan.balancer.fi/#/"	},
 						"polygon":	{"id":137,		"blockExplorerUrl":"polygonscan.com",				"balFrontend":"polygon.balancer.fi/#/"	},
 						"fantom":	{"id":250,		"blockExplorerUrl":"ftmscan.com",					"balFrontend":"app.beets.fi/#/"			},
-						"arbitrum":	{"id":42161,	"blockExplorerUrl":"arbiscan.io",					"balFrontend":"arbitrum.balancer.fi/#/"	}
+						"arbitrum":	{"id":42161,	"blockExplorerUrl":"arbiscan.io",					"balFrontend":"arbitrum.balancer.fi/#/"	},
+						"zkevm": {"id": 1101, "blockExplorerUrl": "zkevm.polygonscan.com", "balFrontend": "zkevm.balancer.fi/#/"}
 					};
 
 	# ABIs and Deployment Addresses
@@ -121,7 +123,7 @@ class balpy(object):
 
 							# ====== Pools and Associated Contracts ======
 							"WeightedPoolFactory": {
-								"directory":"20230206-weighted-pool-v3"
+								"directory": "20230320-weighted-pool-v4"
 							},
 							"WeightedPool2TokensFactory": {
 								"directory":"20210418-weighted-pool"
@@ -267,8 +269,7 @@ class balpy(object):
 		3:"TRANSFER_EXTERNAL"
 	};
 	def __init__(self, network=None, verbose=True, customConfigFile=None, manualEnv={}):
-		super(balpy, self).__init__();
-
+		super(balpy, self).__init__()
 		self.verbose = verbose;
 		if self.verbose:
 			print();
@@ -283,6 +284,7 @@ class balpy(object):
 		else:
 			print("Network is set to", network);
 		self.network = network.lower();
+		self.book = AddrBook(network)
 
 		# set high decimal precision
 		getcontext().prec = 28;
@@ -408,7 +410,11 @@ class balpy(object):
 					deploymentPath = os.path.join('deployments', subdir, "output", self.network + '.json');
 					f = pkgutil.get_data(__name__, deploymentPath).decode();
 					currData = json.loads(f);
-					currAddress = self.web3.toChecksumAddress(currData[contractType]);
+					# currAddress = self.web3.toChecksumAddress(currData[contractType]);
+					# Try using bal_addresses to look up contract address
+					# TODO clean up the rest of this if that works
+					currAddress = self.book.flatbook[f"{subdir}/{contractType}"]
+					print(f"{subdir}/{contractType} has address {currAddress}")
 				self.deploymentAddresses[contractType] = currAddress;
 			except BaseException as error:
 				missingContracts.append(contractType);
@@ -707,7 +713,7 @@ class balpy(object):
 	def generateEtherscanApiUrl(self):
 		etherscanUrl = self.networkParams[self.network]["blockExplorerUrl"]
 		separator = ".";
-		if self.network in ["kovan", "rinkeby","goerli","optimism"]:
+		if self.network in ["kovan", "rinkeby","goerli","optimism", "zkevm"]:
 			separator = "-";
 		urlFront = "https://api" + separator + etherscanUrl;
 		return(urlFront);
@@ -792,6 +798,7 @@ class balpy(object):
 	def isContractVerified(self, poolId, verbose=False):
 		address = self.balPooldIdToAddress(poolId);
 		url = "/api?module=contract&action=getabi&address={}&apikey=".format(address);
+
 		results = self.callEtherscan(url, verbose=verbose);
 		if verbose:
 			print(results);
@@ -1609,7 +1616,9 @@ class balpy(object):
 
 		poolTypeByContract = {};
 		for poolType in self.deploymentAddresses.keys():
-			deploymentAddress = self.deploymentAddresses[poolType].lower();
+			#deploymentAddress = self.deploymentAddresses[poolType].lower();
+			## Replace with bal addresses
+			deploymentAddress = self.book.flatbook[""]
 			poolTypeByContract[deploymentAddress] = poolType;
 
 		poolFactoryType = None;
@@ -1640,10 +1649,6 @@ class balpy(object):
 		return(transaction.input)
 
 	def balGeneratePoolCreationArguments(self, poolId, verbose=False, creationHash=None):
-		if self.network in ["arbitrum"]:
-			self.ERROR("Automated pool verification doesn't work on " + self.network + " yet. Please try the method outlined in the docs using Tenderly.");
-			return(False);
-
 		# query etherscan for internal transactions to find pool factory, pool creation time, and creation hash
 		(address, poolFactoryType, txHash, stampPool) = self.balGetPoolCreationData(poolId, verbose=verbose, inputHash=creationHash);
 

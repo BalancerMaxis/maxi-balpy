@@ -21,7 +21,7 @@
     "fromInternalBalance": false,
     "oracleEnabled": true,
     "amplificationParameter": "100",
-    "owner": "0x0000000000000000000000000000000000000000",
+    "owner": "0xBA1BA1ba1BA1bA1bA1Ba1BA1ba1BA1bA1ba1ba1B",
     "tokens": {
         "0xa387b91e393cfb9356a460370842bc8dbb2f29af": {
             "initialBalance": "100",

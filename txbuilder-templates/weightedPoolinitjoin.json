@@ -1,0 +1,74 @@
+{
+  "version": "1.0",
+  "chainId": "1",
+  "createdAt": 1680739886430,
+  "meta": {
+    "name": "Transactions Batch",
+    "description": "",
+    "txBuilderVersion": "1.13.3",
+    "createdFromSafeAddress": "0x7c68c42De679ffB0f16216154C996C354cF1161B",
+    "createdFromOwnerAddress": "",
+    "checksum": "0x674243c5f477e10a47586c04d5643ded7b1918e1a4b1a07c083f90ef80fe643d"
+  },
+  "transactions": [
+    {
+      "to": "0xBA12222222228d8Ba445958a75a0704d566BF2C8",
+      "value": "0",
+      "data": null,
+      "contractMethod": {
+        "inputs": [
+          {
+            "internalType": "bytes32",
+            "name": "poolId",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "address",
+            "name": "sender",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "recipient",
+            "type": "address"
+          },
+          {
+            "components": [
+              {
+                "internalType": "contract IAsset[]",
+                "name": "assets",
+                "type": "address[]"
+              },
+              {
+                "internalType": "uint256[]",
+                "name": "maxAmountsIn",
+                "type": "uint256[]"
+              },
+              {
+                "internalType": "bytes",
+                "name": "userData",
+                "type": "bytes"
+              },
+              {
+                "internalType": "bool",
+                "name": "fromInternalBalance",
+                "type": "bool"
+              }
+            ],
+            "internalType": "struct IVault.JoinPoolRequest",
+            "name": "request",
+            "type": "tuple"
+          }
+        ],
+        "name": "joinPool",
+        "payable": true
+      },
+      "contractInputsValues": {
+        "poolId": "0x4c8d2e60863e8d7e1033eda2b3d84e92a641802000000000000000000000040f",
+        "sender": "0xeC576a26335dE1C360d2FC9A68cbA6BA37af4a13",
+        "recipient": "0xeC576a26335dE1C360d2FC9A68cbA6BA37af4a13",
+        "request": "[[\"0x823E1B82cE1Dc147Bbdb25a203f046aFab1CE918\",\"0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48\"],[1000,2000],\"0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000040000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000003e800000000000000000000000000000000000000000000000000000000000007d0\",false]"
+      }
+    }
+  ]
+}
