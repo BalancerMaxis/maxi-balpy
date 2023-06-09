@@ -1701,7 +1701,9 @@ class balpy(object):
 					self.deploymentAddresses["ProtocolFeePercentagesProvider"],
 					int(pauseWindowDurationSec),
 					int(bufferPeriodDurationSec),
-					decodedPoolData["owner"]];
+					decodedPoolData["owner"],
+					poolFactoryContract.functions.getPoolVersion().call()]
+
 		elif poolType == "WeightedPool2Tokens":
 			args = [self.deploymentAddresses["Vault"],
 					decodedPoolData["name"],
