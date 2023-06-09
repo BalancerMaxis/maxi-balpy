@@ -1616,9 +1616,8 @@ class balpy(object):
 
 		poolTypeByContract = {};
 		for poolType in self.deploymentAddresses.keys():
-			#deploymentAddress = self.deploymentAddresses[poolType].lower();
+			deploymentAddress = self.deploymentAddresses[poolType].lower();
 			## Replace with bal addresses
-			deploymentAddress = self.book.flatbook[""]
 			poolTypeByContract[deploymentAddress] = poolType;
 
 		poolFactoryType = None;
@@ -1809,6 +1808,7 @@ class balpy(object):
 		poolContract = self.balLoadArbitraryContract(address, self.mc.listToString(poolAbi));
 		if structInConstructor:
 			args = (tuple(args),)
+		print(args)
 		data = poolContract._encode_constructor_data(args=args);
 		encodedData = data[2:]; #cut off the 0x
 
